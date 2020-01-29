@@ -8,12 +8,17 @@
 
 
 
-protocol TodoItemPresentable {
+protocol TodoPresentable {
 	var id : String? {get}
 	var itemText : String? {get}
 }
 
-struct TodoItemModel :TodoItemPresentable {
+struct TodoModel :TodoPresentable {
 	var id: String?
 	var itemText: String?
+	
+	init(id:String, itemText:String) {
+		self.id = id
+		self.itemText = itemText
+	}
 }

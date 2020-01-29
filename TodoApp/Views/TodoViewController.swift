@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TodoViewProtocal: class {
+	func prepareTableViewForUpdate()
+}
+
 class TodoViewController: UIViewController {
 	
 	@IBOutlet var tableViewItems: UITableView!
@@ -30,12 +34,12 @@ class TodoViewController: UIViewController {
 	}
 	
 	@IBAction func addItemsButtonTapped(_ sender: Any) {
-		print("Added a new item")
-		
+		guard let newTodoItem = textFieldItem.text, !newTodoItem.isEmpty else {	return }
+		viewModel?.addNewItem(newTodoItem: newTodoItem)
 	}
 	
 	func bindModelView(){
-			viewModel = TodoItemViewModel()
+		viewModel = TodoItemViewModel(view: self)
 	}
 }
 
@@ -48,16 +52,24 @@ extension TodoViewController : UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let todoCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TodoItemCell
-		
 		guard let todoItemModel = viewModel?.itemsArray[indexPath.row] else { return UITableViewCell() }
 		todoCell.configureTodoCell(with: todoItemModel)
-		
 		return todoCell
 	}
 }
 
 extension TodoViewController : UITableViewDelegate {
 	
+}
+
+extension TodoViewController : TodoViewProtocal {
+	func prepareTableViewForUpdate() {
+		// tableViewItems.reloadData()
+		guard let items = viewModel?.itemsArray else { return }
+		self.tableViewItems.beginUpdates()
+		self.tableViewItems.insertRows(at: [IndexPath(row: items.count-1, section: 0)], with: .automatic)
+		self.tableViewItems.endUpdates()
+	}
 }
 
 

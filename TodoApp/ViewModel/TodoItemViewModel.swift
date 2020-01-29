@@ -8,22 +8,26 @@
 
 
 protocol TodoItemDelegate {
-	func onItemAdded() -> ()
+	func addNewItem(newTodoItem:String) -> ()
 }
 
-class TodoItemViewModel {
-	var newTodoItem : String?
-	var itemsArray : [TodoItemPresentable] = []
-	
-	init(){
-		let item1 = TodoItemModel(id: "1", itemText: "Laundry")
-		let item2 = TodoItemModel(id: "2", itemText: "Joggin")
-		let item3 = TodoItemModel(id: "3", itemText: "Joggin")
-		let item4 = TodoItemModel(id: "4", itemText: "Joggin")
-		let item5 = TodoItemModel(id: "5", itemText: "Sleeping")
-		let item6 = TodoItemModel(id: "6", itemText: "Sleeping")
+protocol TodoViewPresentable {
+	var newTodoItem: String? { get }
+}
 
-		itemsArray.append(contentsOf: [item1, item2, item3, item4, item5, item6])
+class TodoItemViewModel : TodoViewPresentable {
+	weak var view: TodoViewProtocal?
+	
+	var newTodoItem : String?
+	var itemsArray : [TodoPresentable] = []
+	
+	init( view: TodoViewProtocal){
+		self.view = view
+		let item1 = TodoModel(id: "1", itemText: "Laundry")
+		let item2 = TodoModel(id: "2", itemText: "Joggin")
+		let item3 = TodoModel(id: "3", itemText: "Sleeping")
+
+		itemsArray.append(contentsOf: [item1, item2, item3])
 	}
 	
 }
@@ -31,7 +35,12 @@ class TodoItemViewModel {
 
 
 extension TodoItemViewModel : TodoItemDelegate {
-	func onItemAdded() {
-		print("New Item added")
+	func addNewItem(newTodoItem:String) {
+		
+		let itemIndex = itemsArray.count + 1
+		let newItem = TodoModel(id: "\(itemIndex)", itemText: newTodoItem)
+		
+		self.itemsArray.append(newItem)
+		view?.prepareTableViewForUpdate()
 	}
 }
