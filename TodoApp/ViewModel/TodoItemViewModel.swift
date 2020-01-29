@@ -32,8 +32,6 @@ class TodoItemViewModel : TodoViewPresentable {
 	
 }
 
-
-
 extension TodoItemViewModel : TodoItemDelegate {
 	func addNewItem() {
 		
