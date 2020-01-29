@@ -35,7 +35,8 @@ class TodoViewController: UIViewController {
 	
 	@IBAction func addItemsButtonTapped(_ sender: Any) {
 		guard let newTodoItem = textFieldItem.text, !newTodoItem.isEmpty else {	return }
-		viewModel?.addNewItem(newTodoItem: newTodoItem)
+		viewModel?.newTodoItem = newTodoItem
+		viewModel?.addNewItem()
 	}
 	
 	func bindModelView(){
@@ -63,9 +64,12 @@ extension TodoViewController : UITableViewDelegate {
 }
 
 extension TodoViewController : TodoViewProtocal {
+	
+	
 	func prepareTableViewForUpdate() {
 		// tableViewItems.reloadData()
 		guard let items = viewModel?.itemsArray else { return }
+		self.textFieldItem.text = ""
 		self.tableViewItems.beginUpdates()
 		self.tableViewItems.insertRows(at: [IndexPath(row: items.count-1, section: 0)], with: .automatic)
 		self.tableViewItems.endUpdates()

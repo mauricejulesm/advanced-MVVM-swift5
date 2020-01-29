@@ -8,7 +8,7 @@
 
 
 protocol TodoItemDelegate {
-	func addNewItem(newTodoItem:String) -> ()
+	func addNewItem() -> ()
 }
 
 protocol TodoViewPresentable {
@@ -35,12 +35,17 @@ class TodoItemViewModel : TodoViewPresentable {
 
 
 extension TodoItemViewModel : TodoItemDelegate {
-	func addNewItem(newTodoItem:String) {
+	func addNewItem() {
+		
+		guard let newItemText = self.newTodoItem else {
+			return
+		}
 		
 		let itemIndex = itemsArray.count + 1
-		let newItem = TodoModel(id: "\(itemIndex)", itemText: newTodoItem)
+		let newItem = TodoModel(id: "\(itemIndex)", itemText: newItemText)
 		
 		self.itemsArray.append(newItem)
+		self.newTodoItem = ""
 		view?.prepareTableViewForUpdate()
 	}
 }
