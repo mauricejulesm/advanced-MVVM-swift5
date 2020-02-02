@@ -12,21 +12,21 @@ protocol TodoItemDelegate {
 	func onDeleteItem(todoId: String) -> ()
 }
 
-protocol TodoViewPresentable {
+protocol TodoItemViewPresentable {
 	var newTodoItem: String? { get }
 }
 
-class TodoItemViewModel : TodoViewPresentable {
+class TodoItemViewModel : TodoItemViewPresentable {
 	weak var view: TodoViewProtocal?
 	
 	var newTodoItem : String?
-	var itemsArray : [TodoPresentable] = []
+	var itemsArray : [TodoItemPresentable] = []
 	
 	init( view: TodoViewProtocal){
 		self.view = view
-		let item1 = TodoModel(id: "1", itemText: "Laundry")
-		let item2 = TodoModel(id: "2", itemText: "Joggin")
-		let item3 = TodoModel(id: "3", itemText: "Sleeping")
+		let item1 = TodoItemCellViewModel(id: "1", itemText: "Laundry")
+		let item2 = TodoItemCellViewModel(id: "2", itemText: "Joggin")
+		let item3 = TodoItemCellViewModel(id: "3", itemText: "Sleeping")
 
 		itemsArray.append(contentsOf: [item1, item2, item3])
 	}
@@ -42,7 +42,7 @@ extension TodoItemViewModel : TodoItemDelegate {
 		}
 		
 		let itemIndex = itemsArray.count + 1
-		let newItem = TodoModel(id: "\(itemIndex)", itemText: newItemText)
+		let newItem = TodoItemCellViewModel(id: "\(itemIndex)", itemText: newItemText)
 		
 		self.itemsArray.append(newItem)
 		self.newTodoItem = ""
@@ -50,7 +50,7 @@ extension TodoItemViewModel : TodoItemDelegate {
 	}
 	
 	func onDeleteItem(todoId: String) {
-		guard let itemIndex = self.itemsArray.index(where: {$0.id! == todoId }) else {
+		guard let itemIndex = self.itemsArray.firstIndex(where: {$0.id! == todoId }) else {
 			return
 		}
 		self.itemsArray.remove(at: itemIndex)

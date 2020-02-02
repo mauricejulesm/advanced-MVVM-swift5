@@ -22,9 +22,9 @@ class TodoItemCell: UITableViewCell {
 		
     }
 	
-	func configureTodoCell(with model: TodoPresentable) -> () {
-		todoItemNumber.text = model.id
-		todoItemTitle.text = model.itemText
+	func configureTodoCell(with cellViewModel: TodoItemPresentable) -> () {
+		todoItemNumber.text = cellViewModel.id
+		todoItemTitle.text = cellViewModel.itemText
 	}
 	
 }

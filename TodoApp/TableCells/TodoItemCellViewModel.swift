@@ -6,16 +6,16 @@
 //  Copyright © 2020 maurice. All rights reserved.
 //
 
-protocol TodoModelDelegate {
+protocol TodoItemCellDelegate {
 	func onItemSelected() -> ()
 }
 
-protocol TodoPresentable {
+protocol TodoItemPresentable {
 	var id : String? {get}
 	var itemText : String? {get}
 }
 
-struct TodoModel :TodoPresentable {
+struct TodoItemCellViewModel :TodoItemPresentable {
 	var id: String?
 	var itemText: String?
 	
@@ -25,7 +25,7 @@ struct TodoModel :TodoPresentable {
 	}
 }
 
-extension TodoModel : TodoModelDelegate {
+extension TodoItemCellViewModel : TodoItemCellDelegate {
 	func onItemSelected() {
 		print("Item of id \(id ?? "unable to retrieve the id") was selected.")
 	}

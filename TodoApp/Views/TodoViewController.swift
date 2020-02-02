@@ -66,7 +66,7 @@ extension TodoViewController : UITableViewDataSource {
 extension TodoViewController : UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let currentItemView = viewModel?.itemsArray[indexPath.row]
-		(currentItemView as? TodoModelDelegate)?.onItemSelected()
+		(currentItemView as? TodoItemCellDelegate)?.onItemSelected()
 	}
 	
 	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
