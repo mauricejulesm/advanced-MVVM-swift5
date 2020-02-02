@@ -8,7 +8,8 @@
 
 
 protocol TodoItemDelegate {
-	func addNewItem() -> ()
+	func onAddNewItem() -> ()
+	func onDeleteItem(todoId: String) -> ()
 }
 
 protocol TodoViewPresentable {
@@ -33,7 +34,8 @@ class TodoItemViewModel : TodoViewPresentable {
 }
 
 extension TodoItemViewModel : TodoItemDelegate {
-	func addNewItem() {
+	
+	func onAddNewItem() {
 		
 		guard let newItemText = self.newTodoItem else {
 			return
@@ -46,4 +48,13 @@ extension TodoItemViewModel : TodoItemDelegate {
 		self.newTodoItem = ""
 		view?.prepareTableViewForUpdate()
 	}
+	
+	func onDeleteItem(todoId: String) {
+		guard let itemIndex = self.itemsArray.index(where: {$0.id! == todoId }) else {
+			return
+		}
+		self.itemsArray.remove(at: itemIndex)
+		self.view?.prepareViewForItemRemove(at: itemIndex)
+	}
+	
 }
